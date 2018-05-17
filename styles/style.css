@@ -1,0 +1,121 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Helvetica';
+}
+
+.hidden {
+  display: none;
+}
+
+.checked {
+  color: gold;
+}
+
+h1 {
+  text-align: center;
+}
+
+div.top {
+  width: 500px;
+  padding: 0;
+  margin: auto;
+  margin-bottom: 10px;
+}
+
+div.main {
+  width: 500px;
+  padding: 0;
+  margin: auto;
+  margin-bottom: 10px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+div.container {
+  width: 500px;
+  padding: 0;
+  margin: auto;
+  margin-bottom: 10px;
+}
+
+label.title-entry {
+  margin-left: 5px;
+}
+
+input.title-entry {
+  width: 443px;
+  margin: 5px;
+}
+
+label.url-entry {
+  margin-left: 5px;
+}
+
+input.url-entry {
+  width: 441px;
+  margin: 5px;
+}
+
+label.description-entry {
+  margin-left: 5px;
+}
+
+textarea.description-entry {
+  width: 487px;
+  height: 100px;
+  margin: 5px;
+}
+
+label.ratings-entry {
+  margin-left: 5px;
+}
+
+ul.js-bookmarks-list {
+  padding: 0;
+}
+
+button.js-create-button {
+  float: right;
+  margin-right: 5px;
+}
+
+button.js-add-button {
+  float: right;
+  margin-right: 5px;
+}
+
+button.js-remove-button {
+  float: right;
+  margin-right: 5px;
+}
+
+button.js-collapse-button {
+  float: right;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+li.js-bookmark-entry {
+  list-style: none;
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.js-bookmark-entry>h3 {
+  padding: 5px;
+  margin: auto;
+  background-color: lightgray;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.js-bookmark-entry>a {
+  margin: auto;
+  padding: 5px;
+}
+
+.js-bookmark-entry>p {
+  padding: 5px;
+  margin: auto;
+}
