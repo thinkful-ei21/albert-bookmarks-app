@@ -8,20 +8,18 @@ const sampleFunc = function(response) {
 };
 
 const sampleObj = {
-  title: 'Wikipedia',
-  url: 'https://www.wikipedia.com',
-  desc: 'The magic page of the internet',
-  rating: 5
+  title: 'Sample Title',
+  url: 'https://www.example.com',
+  desc: 'Example description',
+  rating: 4
 };
+
 
 
 $(document).ready(function() {
 
-  // test to make sure code can post ample to api, it works!!
+  // test to make sure code can post sample to api, it works!!
   // api.addBookmark(sampleObj, sampleFunc);
-
-  // test to make sure code can delete from api, it works, but need to decide on what to do on callback
-  // api.removeBookmark('<inser id string>', api.getBookmarks);
 
   api.getBookmarks(function(response) {
     STORE.synchBookmarks(response);
@@ -32,8 +30,3 @@ $(document).ready(function() {
   bookmarksList.render();
   bookmarksList.bindEventListeners();
 });
-
-// use this to refresh bookmark in STORE
-// api.getBookmarks(function(response) {
-//   STORE.synchBookmarks(response);
-// });

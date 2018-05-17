@@ -1,6 +1,6 @@
 'use strict';
 
-/* global */
+/* global api bookmarksList */
 
 const STORE = (function() {
   const bookmarks = [];
@@ -21,12 +21,6 @@ const STORE = (function() {
       });
     });
   };
-
-
-  // const findAndToggleChecked = function(id) {
-  //   const item = this.findById(id);
-  //   item.checked = !item.checked;
-  // };
   
   const findById = function(id) {
     return STORE.bookmarks.find(each => each.id === id);
@@ -37,7 +31,7 @@ const STORE = (function() {
     foundItem.isCollapsed = !foundItem.isCollapsed;
   };
 
-  return{
+  return {
     bookmarks,
     isAdding,
     synchBookmarks,

@@ -1,6 +1,6 @@
 'use strict';
 
-/* global $ STORE */
+/* global $ api STORE */
 
 const bookmarksList = (function() {
 
@@ -14,6 +14,27 @@ const bookmarksList = (function() {
       let clickedElementId = getItemIdFromElement(event.currentTarget);
       STORE.findAndToggleById(clickedElementId);
       render();
+    });
+  };
+
+  const handleRemoveButton = function() {
+    $('.js-bookmarks-list').on('click', '.js-remove-button', function(event) {
+      event.preventDefault();
+      let clickedElementId = getItemIdFromElement(event.currentTarget);
+      api.removeBookmark(clickedElementId, () => {
+        api.getBookmarks(function(response) {
+          STORE.synchBookmarks(response);
+          render();
+        });
+      });
+      // STORE.findAndDeleteById(clickedElementId);
+    });
+
+    // below is attempt to refresh html content after bookmark deletion
+    api.getBookmarks(function(response) {
+      STORE.synchBookmarks(response);
+      render();
+      console.log('document ready function ran, STORE.bookmarks contains', STORE.bookmarks);
     });
   };
 
@@ -39,7 +60,7 @@ const bookmarksList = (function() {
         <li class="js-bookmark-entry" data-bookmark-id="${each.id}">
           <button class="js-collapse-button">-</button>
           <h3>${each.title}</h3>
-          <a class="${isCollapsed}" href="h${each.url}" target="blank">${each.url}</a>
+          <a class="${isCollapsed}" href="${each.url}" target="blank">${each.url}</a>
           <p class="${isCollapsed}">${each.desc}</p>
           <button class="js-remove-button ${isCollapsed}">Remove</button>
           <p>${starDisplay}</p>
@@ -57,6 +78,7 @@ const bookmarksList = (function() {
 
   const bindEventListeners = function() {
     handleCollapseButton();
+    handleRemoveButton();
   };
 
   return {
