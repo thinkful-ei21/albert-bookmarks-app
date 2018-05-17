@@ -24,13 +24,16 @@ $(document).ready(function() {
   // api.removeBookmark('<inser id string>', api.getBookmarks);
 
   api.getBookmarks(function(response) {
-    STORE.generateBookmarks(response);
+    STORE.synchBookmarks(response);
     bookmarksList.render();
     console.log('document ready function ran, STORE.bookmarks contains', STORE.bookmarks);
   });
+
+  bookmarksList.render();
+  bookmarksList.bindEventListeners();
 });
 
 // use this to refresh bookmark in STORE
 // api.getBookmarks(function(response) {
-//   STORE.generateBookmarks(response);
+//   STORE.synchBookmarks(response);
 // });

@@ -7,7 +7,7 @@ const STORE = (function() {
 
   const isAdding = false;
 
-  const generateBookmarks = function(response) {
+  const synchBookmarks = function(response) {
     STORE.bookmarks = [];
     
     response.forEach((each) =>{
@@ -22,9 +22,26 @@ const STORE = (function() {
     });
   };
 
+
+  // const findAndToggleChecked = function(id) {
+  //   const item = this.findById(id);
+  //   item.checked = !item.checked;
+  // };
+  
+  const findById = function(id) {
+    return STORE.bookmarks.find(each => each.id === id);
+  };
+
+  const findAndToggleById = function(id) {
+    const foundItem = this.findById(id);
+    foundItem.isCollapsed = !foundItem.isCollapsed;
+  };
+
   return{
     bookmarks,
     isAdding,
-    generateBookmarks
+    synchBookmarks,
+    findById,
+    findAndToggleById
   };
 }());

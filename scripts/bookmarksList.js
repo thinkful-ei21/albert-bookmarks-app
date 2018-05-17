@@ -3,6 +3,20 @@
 /* global $ STORE */
 
 const bookmarksList = (function() {
+
+  const getItemIdFromElement = function(item) {
+    return $(item).closest('.js-bookmark-entry').data('bookmark-id');
+  };
+
+  const handleCollapseButton = function() {
+    $('.js-bookmarks-list').on('click', '.js-collapse-button', function(event) {
+      event.preventDefault();
+      let clickedElementId = getItemIdFromElement(event.currentTarget);
+      STORE.findAndToggleById(clickedElementId);
+      render();
+    });
+  };
+
   const generateHtml = function(bookmarksArray) {
 
     const htmlStringArray = [];
@@ -21,17 +35,15 @@ const bookmarksList = (function() {
       if(stars === 4) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span>';}
       if(stars === 5) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span>';}
   
-      htmlStringArray.push(
-        `
-        <li class="js-bookmark-entry" id="${each.id}">
+      htmlStringArray.push(`
+        <li class="js-bookmark-entry" data-bookmark-id="${each.id}">
           <button class="js-collapse-button">-</button>
           <h3>${each.title}</h3>
           <a class="${isCollapsed}" href="h${each.url}" target="blank">${each.url}</a>
           <p class="${isCollapsed}">${each.desc}</p>
           <button class="js-remove-button ${isCollapsed}">Remove</button>
           <p>${starDisplay}</p>
-        </li>
-        `
+        </li>`
       );
     });
 
@@ -42,8 +54,13 @@ const bookmarksList = (function() {
     const htmlString = generateHtml(STORE.bookmarks);
     $('.js-bookmarks-list').html(htmlString);
   };
-  
+
+  const bindEventListeners = function() {
+    handleCollapseButton();
+  };
+
   return {
-    render
+    render,
+    bindEventListeners
   };
 }());
