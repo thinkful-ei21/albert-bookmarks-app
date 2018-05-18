@@ -119,43 +119,49 @@ const bookmarksList = (function() {
 
   const generateHtml = function(bookmarksArray) {
 
-    const htmlStringArray = [];
+    let htmlStringArray = [];
 
-    bookmarksArray.forEach((each) => {
+    if(bookmarksArray.length === 0) {
+      htmlStringArray.push('<p>You have no bookmarks! Click the "New Bookmark" button above to start adding some!</p>');
+    } else {
+      bookmarksArray.forEach((each) => {
 
-      let isCollapsed = '';
-      let isCollapsedButtonText = '&#9652;';
-      if(each.isCollapsed === true) {
-        isCollapsed = 'hidden';
-        isCollapsedButtonText = '&#9662;';
-      }
-
-      let isFiltered = '';
-      if(STORE.filterMode === true && each.rating < STORE.filterValue) {isFiltered = 'Filtered';}
-
-      let desc = each.desc;
-      if(!desc) {desc = 'No description';}
-
-      let starDisplay = '';
-      let stars = each.rating;
-      if(!stars) (starDisplay) = '<span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
-      if(stars === 1) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
-      if(stars === 2) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
-      if(stars === 3) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
-      if(stars === 4) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span>';}
-      if(stars === 5) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span>';}
+        let isCollapsed = '';
+        let isCollapsedButtonText = '&#9652;';
+        if(each.isCollapsed === true) {
+          isCollapsed = 'hidden';
+          isCollapsedButtonText = '&#9662;';
+        }
   
-      htmlStringArray.push(`
-        <li class="js-bookmark-entry ${isFiltered}" data-bookmark-id="${each.id}">
-          <button class="js-collapse-button">${isCollapsedButtonText}</button>
-          <h3>${each.title}</h3>
-          <a class="${isCollapsed}" href="${each.url}" target="blank">${each.url}</a>
-          <p class="${isCollapsed}">${desc}</p>
-          <button class="js-remove-button ${isCollapsed}">Remove</button>
-          <p>${starDisplay}</p>
-        </li>`
-      );
-    });
+        let isFiltered = '';
+        if(STORE.filterMode === true && each.rating < STORE.filterValue) {isFiltered = 'Filtered';}
+  
+        let desc = each.desc;
+        if(!desc) {desc = 'No description';}
+  
+        let starDisplay = '';
+        let stars = each.rating;
+        if(!stars) (starDisplay) = '<span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
+        if(stars === 1) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
+        if(stars === 2) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
+        if(stars === 3) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
+        if(stars === 4) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span>';}
+        if(stars === 5) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span>';}
+    
+        htmlStringArray.push(`
+          <li class="js-bookmark-entry ${isFiltered}" data-bookmark-id="${each.id}">
+            <button class="js-collapse-button">${isCollapsedButtonText}</button>
+            <h3>${each.title}</h3>
+            <a class="${isCollapsed}" href="${each.url}" target="blank">Visit Site</a>
+            <p class="${isCollapsed}">${desc}</p>
+            <button class="js-remove-button ${isCollapsed}">Remove</button>
+            <p>${starDisplay}</p>
+          </li>`
+        );
+      });
+    }
+
+
 
     return htmlStringArray.join('');
 
@@ -167,13 +173,13 @@ const bookmarksList = (function() {
     if(STORE.creationMode === true) {
       htmlString = `
       <form action="#">
-      <label class="js-title-input">Title:</label>
+      <label class="js-title-input" for="title-input">Title:</label>
       <input class="js-title-input" id="title-input" type="text" /><br />
-      <label class="js-url-input">URL:</label>
+      <label class="js-url-input" for="url-input">URL:</label>
       <input class="js-url-input" id="url-input" type="text" /><br />
-      <label class="js-description-input">Description:</label><br />
+      <label class="js-description-input" for="description-input">Description:</label><br />
       <textarea class="js-description-input" id="description-input"></textarea><br />
-      <label class="js-ratings-input">Rating:</label>
+      <label class="js-ratings-input" for="rating-input">Rating:</label>
       <select id="rating-input">
         <option value="0">Unrated</option>
         <option value="1">1 Star</option>
