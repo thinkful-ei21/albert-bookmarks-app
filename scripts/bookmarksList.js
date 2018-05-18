@@ -124,10 +124,10 @@ const bookmarksList = (function() {
     bookmarksArray.forEach((each) => {
 
       let isCollapsed = '';
-      let isCollapsedButtonText = '-';
+      let isCollapsedButtonText = '&#9652;';
       if(each.isCollapsed === true) {
         isCollapsed = 'hidden';
-        isCollapsedButtonText = '+';
+        isCollapsedButtonText = '&#9662;';
       }
 
       let isFiltered = '';
