@@ -5,7 +5,11 @@
 const STORE = (function() {
   const bookmarks = [];
 
-  const isAdding = false;
+  const creationMode = false;
+
+  const filterMode = false;
+
+  const filterValue = 1;
 
   const synchBookmarks = function(response) {
     STORE.bookmarks = [];
@@ -33,7 +37,9 @@ const STORE = (function() {
 
   return {
     bookmarks,
-    isAdding,
+    creationMode,
+    filterMode,
+    filterValue,
     synchBookmarks,
     findById,
     findAndToggleById

@@ -24,10 +24,21 @@ const bookmarksList = (function() {
     $('#rating-input').val('1');
   };
 
+  const handleFilterSelect = function() {
+    $('.js-user-settings').on('change', '#js-ratings-filter', function() {
+      STORE.filterValue = $('#js-ratings-filter').val();
+
+      if(STORE.filterValue < 2) {STORE.filterMode = false;}
+      else(STORE.filterMode = true);
+
+      renderBookmarks();
+    });
+  };
+
   const handleToggleInputButton = function() {
     $('.js-user-settings').on('click', '.js-toggle-input-button', function(event) {
       event.preventDefault();
-      STORE.isAdding = true;
+      STORE.creationMode = true;
       renderInputForm();
     });
   };
@@ -54,7 +65,7 @@ const bookmarksList = (function() {
     $('.js-input-form').on('click', '.js-cancel-button', function(event) {
       event.preventDefault();
       clearInputEntries();
-      STORE.isAdding = false;
+      STORE.creationMode = false;
       renderInputForm();
     });
   };
@@ -90,6 +101,9 @@ const bookmarksList = (function() {
       let isCollapsed = '';
       if(each.isCollapsed === true) {isCollapsed = 'hidden';}
 
+      let isFiltered = '';
+      if(STORE.filterMode === true && each.rating < STORE.filterValue) {isFiltered = 'Filtered';}
+
       let starDisplay = '';
       let stars = each.rating;
       if(stars === 1) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
@@ -99,7 +113,7 @@ const bookmarksList = (function() {
       if(stars === 5) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span>';}
   
       htmlStringArray.push(`
-        <li class="js-bookmark-entry" data-bookmark-id="${each.id}">
+        <li class="js-bookmark-entry ${isFiltered}" data-bookmark-id="${each.id}">
           <button class="js-collapse-button">+</button>
           <h3>${each.title}</h3>
           <a class="${isCollapsed}" href="${each.url}" target="blank">${each.url}</a>
@@ -117,7 +131,7 @@ const bookmarksList = (function() {
   const renderInputForm = function() {
     let htmlString = '';
 
-    if(STORE.isAdding === true) {
+    if(STORE.creationMode === true) {
       htmlString = `
       <form action="#">
       <label class="js-title-input">Title:</label>
@@ -148,6 +162,7 @@ const bookmarksList = (function() {
   };
 
   const bindEventListeners = function() {
+    handleFilterSelect();
     handleToggleInputButton();
     handleSaveButton();
     handleCancelButton();
