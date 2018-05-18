@@ -24,7 +24,7 @@ const api = (function() {
       contentType: 'application/json',
       data: newData,
       success: callback,
-      error: function() {alert('Must Title or URL');}
+      error: function(response) {alert(response.responseJSON.message);}
     });
   };
 

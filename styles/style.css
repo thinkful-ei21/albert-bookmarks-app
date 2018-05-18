@@ -27,7 +27,7 @@ div.js-input-form {
   padding: 0;
   margin: auto;
   margin-bottom: 10px;
-  border: 1px solid black;
+  border: 2px solid black;
   border-radius: 10px;
 }
 
@@ -43,7 +43,7 @@ label.js-title-input {
 }
 
 input.js-title-input {
-  width: 443px;
+  width: 440px;
   margin: 5px;
 }
 
@@ -52,7 +52,7 @@ label.js-url-input {
 }
 
 input.js-url-input {
-  width: 441px;
+  width: 438px;
   margin: 5px;
 }
 
@@ -102,7 +102,7 @@ button.js-collapse-button {
 
 li.js-bookmark-entry {
   list-style: none;
-  border: 1px solid black;
+  border: 2px solid black;
   border-radius: 10px;
   margin-bottom: 10px;
 }

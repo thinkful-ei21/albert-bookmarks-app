@@ -5,12 +5,38 @@
 const bookmarksList = (function() {
 
   const createUserInputObj = function() {
-    return {
-      title: $('#title-input').val(),
-      url: $('#url-input').val(),
-      desc: $('#description-input').val(),
-      rating: $('#rating-input').val()
-    };
+
+    let userTitle = $('#title-input').val();
+    let userUrl = $('#url-input').val();
+    let userDesc = $('#description-input').val();
+    let userRating = parseInt($('#rating-input').val(), 10);
+    
+    if(!userDesc && !userRating) {
+      return {
+        title: userTitle,
+        url: userUrl
+      };
+    } else if(!userDesc) {
+      return {
+        title: userTitle,
+        url: userUrl,
+        rating: userRating
+      };
+    } else if(!userRating) {
+      return {
+        title: userTitle,
+        url: userUrl,
+        desc: userDesc
+      };
+    } else {
+      return {
+        title: userTitle,
+        url: userUrl,
+        desc: userDesc,
+        rating: userRating
+      };
+    }
+
   };
 
   const getItemIdFromElement = function(item) {
@@ -21,14 +47,14 @@ const bookmarksList = (function() {
     $('#title-input').val('');
     $('#url-input').val('');
     $('#description-input').val('');
-    $('#rating-input').val('1');
+    $('#rating-input').val('0');
   };
 
   const handleFilterSelect = function() {
     $('.js-user-settings').on('change', '#js-ratings-filter', function() {
       STORE.filterValue = $('#js-ratings-filter').val();
 
-      if(STORE.filterValue < 2) {STORE.filterMode = false;}
+      if(STORE.filterValue < 1) {STORE.filterMode = false;}
       else(STORE.filterMode = true);
 
       renderBookmarks();
@@ -98,13 +124,21 @@ const bookmarksList = (function() {
     bookmarksArray.forEach((each) => {
 
       let isCollapsed = '';
-      if(each.isCollapsed === true) {isCollapsed = 'hidden';}
+      let isCollapsedButtonText = '-';
+      if(each.isCollapsed === true) {
+        isCollapsed = 'hidden';
+        isCollapsedButtonText = '+';
+      }
 
       let isFiltered = '';
       if(STORE.filterMode === true && each.rating < STORE.filterValue) {isFiltered = 'Filtered';}
 
+      let desc = each.desc;
+      if(!desc) {desc = 'No description';}
+
       let starDisplay = '';
       let stars = each.rating;
+      if(!stars) (starDisplay) = '<span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
       if(stars === 1) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
       if(stars === 2) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
       if(stars === 3) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
@@ -113,10 +147,10 @@ const bookmarksList = (function() {
   
       htmlStringArray.push(`
         <li class="js-bookmark-entry ${isFiltered}" data-bookmark-id="${each.id}">
-          <button class="js-collapse-button">+</button>
+          <button class="js-collapse-button">${isCollapsedButtonText}</button>
           <h3>${each.title}</h3>
           <a class="${isCollapsed}" href="${each.url}" target="blank">${each.url}</a>
-          <p class="${isCollapsed}">${each.desc}</p>
+          <p class="${isCollapsed}">${desc}</p>
           <button class="js-remove-button ${isCollapsed}">Remove</button>
           <p>${starDisplay}</p>
         </li>`
@@ -141,12 +175,13 @@ const bookmarksList = (function() {
       <textarea class="js-description-input" id="description-input"></textarea><br />
       <label class="js-ratings-input">Rating:</label>
       <select id="rating-input">
-          <option value="1">1 Star</option>
-          <option value="2">2 Stars</option>
-          <option value="3">3 Stars</option>
-          <option value="4">4 Stars</option>
-          <option value="5">5 Stars</option>
-        </select>
+        <option value="0">Unrated</option>
+        <option value="1">1 Star</option>
+        <option value="2">2 Stars</option>
+        <option value="3">3 Stars</option>
+        <option value="4">4 Stars</option>
+        <option value="5">5 Stars</option>
+      </select>
       <button class="js-save-button">Save</button>
       <button class="js-cancel-button">Cancel</button>
       </form>`;
