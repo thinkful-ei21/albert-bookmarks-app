@@ -1,6 +1,6 @@
 'use strict';
 
-/* global api bookmarksList */
+/* global */
 
 const STORE = (function() {
   const bookmarks = [];

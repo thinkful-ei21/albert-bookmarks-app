@@ -15,14 +15,14 @@ h1 {
   text-align: center;
 }
 
-div.top {
+div.js-user-settings {
   width: 500px;
   padding: 0;
   margin: auto;
   margin-bottom: 10px;
 }
 
-div.main {
+div.js-input-form {
   width: 500px;
   padding: 0;
   margin: auto;
@@ -38,35 +38,35 @@ div.container {
   margin-bottom: 10px;
 }
 
-label.title-entry {
+label.js-title-input {
   margin-left: 5px;
 }
 
-input.title-entry {
+input.js-title-input {
   width: 443px;
   margin: 5px;
 }
 
-label.url-entry {
+label.js-url-input {
   margin-left: 5px;
 }
 
-input.url-entry {
+input.js-url-input {
   width: 441px;
   margin: 5px;
 }
 
-label.description-entry {
+label.js-description-input {
   margin-left: 5px;
 }
 
-textarea.description-entry {
+textarea.js-description-input {
   width: 487px;
   height: 100px;
   margin: 5px;
 }
 
-label.ratings-entry {
+label.js-ratings-input {
   margin-left: 5px;
 }
 
@@ -74,12 +74,17 @@ ul.js-bookmarks-list {
   padding: 0;
 }
 
-button.js-create-button {
+button.js-toggle-input-button {
   float: right;
   margin-right: 5px;
 }
 
-button.js-add-button {
+button.js-save-button {
+  float: right;
+  margin-right: 5px;
+}
+
+button.js-cancel-button {
   float: right;
   margin-right: 5px;
 }

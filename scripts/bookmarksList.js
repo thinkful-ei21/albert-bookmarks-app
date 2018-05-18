@@ -4,8 +4,59 @@
 
 const bookmarksList = (function() {
 
+  const createUserInputObj = function() {
+    return {
+      title: $('#title-input').val(),
+      url: $('#url-input').val(),
+      desc: $('#description-input').val(),
+      rating: $('#rating-input').val()
+    };
+  };
+
   const getItemIdFromElement = function(item) {
     return $(item).closest('.js-bookmark-entry').data('bookmark-id');
+  };
+
+  const clearInputEntries = function() {
+    $('#title-input').val('');
+    $('#url-input').val('');
+    $('#description-input').val('');
+    $('#rating-input').val('1');
+  };
+
+  const handleToggleInputButton = function() {
+    $('.js-user-settings').on('click', '.js-toggle-input-button', function(event) {
+      event.preventDefault();
+      STORE.isAdding = true;
+      renderInputForm();
+    });
+  };
+
+  const handleSaveButton = function() {
+    $('.js-input-form').on('click', '.js-save-button', function(event) {
+      event.preventDefault();
+
+      const userInputObj = createUserInputObj();
+
+      api.addBookmark(userInputObj, () => {
+        api.getBookmarks(function(response) {
+          STORE.synchBookmarks(response);
+          renderBookmarks();
+        });
+      });
+      
+      clearInputEntries();
+
+    });
+  };
+
+  const handleCancelButton = function() {
+    $('.js-input-form').on('click', '.js-cancel-button', function(event) {
+      event.preventDefault();
+      clearInputEntries();
+      STORE.isAdding = false;
+      renderInputForm();
+    });
   };
 
   const handleCollapseButton = function() {
@@ -13,28 +64,20 @@ const bookmarksList = (function() {
       event.preventDefault();
       let clickedElementId = getItemIdFromElement(event.currentTarget);
       STORE.findAndToggleById(clickedElementId);
-      render();
+      renderBookmarks();
     });
   };
 
   const handleRemoveButton = function() {
     $('.js-bookmarks-list').on('click', '.js-remove-button', function(event) {
       event.preventDefault();
-      let clickedElementId = getItemIdFromElement(event.currentTarget);
+      const clickedElementId = getItemIdFromElement(event.currentTarget);
       api.removeBookmark(clickedElementId, () => {
         api.getBookmarks(function(response) {
           STORE.synchBookmarks(response);
-          render();
+          renderBookmarks();
         });
       });
-      // STORE.findAndDeleteById(clickedElementId);
-    });
-
-    // below is attempt to refresh html content after bookmark deletion
-    api.getBookmarks(function(response) {
-      STORE.synchBookmarks(response);
-      render();
-      console.log('document ready function ran, STORE.bookmarks contains', STORE.bookmarks);
     });
   };
 
@@ -49,7 +92,6 @@ const bookmarksList = (function() {
 
       let starDisplay = '';
       let stars = each.rating;
-      if(stars === 0) {starDisplay = '(no rating)';}
       if(stars === 1) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
       if(stars === 2) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
       if(stars === 3) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
@@ -58,7 +100,7 @@ const bookmarksList = (function() {
   
       htmlStringArray.push(`
         <li class="js-bookmark-entry" data-bookmark-id="${each.id}">
-          <button class="js-collapse-button">-</button>
+          <button class="js-collapse-button">+</button>
           <h3>${each.title}</h3>
           <a class="${isCollapsed}" href="${each.url}" target="blank">${each.url}</a>
           <p class="${isCollapsed}">${each.desc}</p>
@@ -69,20 +111,54 @@ const bookmarksList = (function() {
     });
 
     return htmlStringArray.join('');
+
   };
 
-  const render = function() {
+  const renderInputForm = function() {
+    let htmlString = '';
+
+    if(STORE.isAdding === true) {
+      htmlString = `
+      <form action="#">
+      <label class="js-title-input">Title:</label>
+      <input class="js-title-input" id="title-input" type="text" /><br />
+      <label class="js-url-input">URL:</label>
+      <input class="js-url-input" id="url-input" type="text" /><br />
+      <label class="js-description-input">Description:</label><br />
+      <textarea class="js-description-input" id="description-input"></textarea><br />
+      <label class="js-ratings-input">Rating:</label>
+      <select id="rating-input">
+          <option value="1">1 Star</option>
+          <option value="2">2 Stars</option>
+          <option value="3">3 Stars</option>
+          <option value="4">4 Stars</option>
+          <option value="5">5 Stars</option>
+        </select>
+      <button class="js-save-button">Save</button>
+      <button class="js-cancel-button">Cancel</button>
+      </form>`;
+    }
+
+    $('.js-input-form').html(htmlString);
+  };
+
+  const renderBookmarks = function() {
     const htmlString = generateHtml(STORE.bookmarks);
     $('.js-bookmarks-list').html(htmlString);
   };
 
   const bindEventListeners = function() {
+    handleToggleInputButton();
+    handleSaveButton();
+    handleCancelButton();
     handleCollapseButton();
     handleRemoveButton();
   };
 
   return {
-    render,
+    renderInputForm,
+    renderBookmarks,
     bindEventListeners
   };
+
 }());

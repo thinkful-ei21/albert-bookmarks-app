@@ -13,38 +13,22 @@
 
 <body>
   <h1>My Bookmarks</h1>
-  <div class="top">
+  
+  <div class="js-user-settings">
       <label for="filter">Filter by Rating:</label>
       <select class="js-raitings-filter">
-        <option value="0">0</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
+        <option value="1">All Ratings</option>
+        <option value="2">At least 2 Stars</option>
+        <option value="3">At least 3 Stars</option>
+        <option value="4">At least 4 Stars</option>
+        <option value="5">At least 5 Stars</option>
       </select>
-      <button class="js-create-button">New Bookmark</button>
+      <button class="js-toggle-input-button">New Bookmark</button>
   </div>
-  <div class="main hidden">
-    <form action="#">
-      <label class="title-entry">Title:</label>
-      <input class="title-entry" type="text" /><br />
-      <label class="url-entry">URL:</label>
-      <input class="url-entry" type="text" /><br />
-      <label class="description-entry">Description:</label><br />
-      <textarea class="description-entry"></textarea><br />
-      <label class="ratings-entry">Rating:</label>
-      <select>
-          <option value="0">0</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
-      <button class="js-add-button">Add</button>
-    </form>
+
+  <div class="js-input-form">
   </div>
+
   <div class="container">
       <ul class="js-bookmarks-list">
       </ul>
