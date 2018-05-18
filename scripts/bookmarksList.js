@@ -43,11 +43,20 @@ const bookmarksList = (function() {
     return $(item).closest('.js-bookmark-entry').data('bookmark-id');
   };
 
+  const generateErrorMessage = function(message) {
+    $('p.error-message').html('Warning: ' + message);
+  };
+
+  const clearErrorMessage = function() {
+    $('p.error-message').html('');
+  };
+
   const clearInputEntries = function() {
     $('#title-input').val('');
     $('#url-input').val('');
     $('#description-input').val('');
     $('#rating-input').val('0');
+    clearErrorMessage();
   };
 
   const handleFilterSelect = function() {
@@ -122,7 +131,7 @@ const bookmarksList = (function() {
     let htmlStringArray = [];
 
     if(bookmarksArray.length === 0) {
-      htmlStringArray.push('<p>You have no bookmarks! Click the "New Bookmark" button above to start adding some!</p>');
+      htmlStringArray.push('<p>You have no bookmarks! Click the "New Bookmark" button above and start adding some!</p>');
     } else {
       bookmarksArray.forEach((each) => {
 
@@ -139,29 +148,40 @@ const bookmarksList = (function() {
         let desc = each.desc;
         if(!desc) {desc = 'No description';}
   
+        let starReader = '';
         let starDisplay = '';
         let stars = each.rating;
-        if(!stars) (starDisplay) = '<span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
-        if(stars === 1) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
-        if(stars === 2) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
-        if(stars === 3) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
-        if(stars === 4) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span>';}
-        if(stars === 5) {starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span>';}
+        if(!stars) {
+          starReader = 'zero-star-rating';
+          starDisplay = '<span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
+        if(stars === 1) {
+          starReader = 'one-star-rating';
+          starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
+        if(stars === 2) {
+          starReader = 'two-star-rating';
+          starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
+        if(stars === 3) {
+          starReader = 'three-star-rating';
+          starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';}
+        if(stars === 4) {
+          starReader = 'four-star-rating';
+          starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span>';}
+        if(stars === 5) {
+          starReader = 'five-star-rating';
+          starDisplay = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span>';}
     
         htmlStringArray.push(`
           <li class="js-bookmark-entry ${isFiltered}" data-bookmark-id="${each.id}">
             <button class="js-collapse-button">${isCollapsedButtonText}</button>
-            <h3>${each.title}</h3>
-            <a class="${isCollapsed}" href="${each.url}" target="blank">Visit Site</a>
-            <p class="${isCollapsed}">${desc}</p>
+            <h3 class="bookmark-title">${each.title}</h3>
+            <a class="bookmark-url ${isCollapsed}" href="${each.url}" target="blank">Visit Site</a>
+            <p class="bookmark-description ${isCollapsed}">${desc}</p>
             <button class="js-remove-button ${isCollapsed}">Remove</button>
-            <p>${starDisplay}</p>
+            <p class="${starReader}">${starDisplay}</p>
           </li>`
         );
       });
     }
-
-
 
     return htmlStringArray.join('');
 
@@ -172,6 +192,7 @@ const bookmarksList = (function() {
 
     if(STORE.creationMode === true) {
       htmlString = `
+      <p class="error-message"></p>
       <form action="#">
       <label class="js-title-input" for="title-input">Title:</label>
       <input class="js-title-input" id="title-input" type="text" /><br />
@@ -212,6 +233,7 @@ const bookmarksList = (function() {
 
   return {
     renderInputForm,
+    generateErrorMessage,
     renderBookmarks,
     bindEventListeners
   };

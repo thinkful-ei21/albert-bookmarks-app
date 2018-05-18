@@ -1,6 +1,6 @@
 'use strict';
 
-/* global */
+/* global Object */
 
 const STORE = (function() {
   const bookmarks = [];
@@ -13,16 +13,11 @@ const STORE = (function() {
 
   const synchBookmarks = function(response) {
     STORE.bookmarks = [];
-    
+  
     response.forEach((each) =>{
-      STORE.bookmarks.push({
-        id: each.id,
-        title: each.title,
-        url: each.url,
-        desc: each.desc,
-        rating: each.rating,
-        isCollapsed: true
-      });
+      const decoration = {isCollapsed: true};
+      const decoratedObject = Object.assign(each, decoration);
+      STORE.bookmarks.push(decoratedObject);
     });
   };
   

@@ -32,6 +32,12 @@ div.js-input-form {
   background-color: white;
 }
 
+p.error-message {
+  font-size: 15px;
+  color: red;
+  margin: 5px;
+}
+
 div.container {
   width: 500px;
   padding: 0;

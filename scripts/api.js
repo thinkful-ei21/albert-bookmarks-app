@@ -1,6 +1,6 @@
 'use strict';
 
-/* global $ */
+/* global $ bookmarksList */
 
 const api = (function() {
   const BASE_URL = 'https://thinkful-list-api.herokuapp.com/albert/bookmarks/';
@@ -24,7 +24,9 @@ const api = (function() {
       contentType: 'application/json',
       data: newData,
       success: callback,
-      error: function(response) {alert(response.responseJSON.message);}
+      error: function(response) {
+        bookmarksList.generateErrorMessage(response.responseJSON.message);
+      }
     });
   };
 
