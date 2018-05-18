@@ -52,11 +52,10 @@ const bookmarksList = (function() {
       api.addBookmark(userInputObj, () => {
         api.getBookmarks(function(response) {
           STORE.synchBookmarks(response);
+          clearInputEntries();
           renderBookmarks();
         });
       });
-      
-      clearInputEntries();
 
     });
   };

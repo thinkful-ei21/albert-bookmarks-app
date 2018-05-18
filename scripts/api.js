@@ -23,7 +23,8 @@ const api = (function() {
       dataType: 'json',
       contentType: 'application/json',
       data: newData,
-      success: callback
+      success: callback,
+      error: function() {alert('Must Title or URL');}
     });
   };
 
